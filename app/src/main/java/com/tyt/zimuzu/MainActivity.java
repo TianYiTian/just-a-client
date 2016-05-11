@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.fab:
                 if (mPopupWindow==null) {
                     mPopupWindow = new PopupWindow(((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.setting_popup, null),getWindowManager().getDefaultDisplay().getWidth() , (int)this.getWindowManager().getDefaultDisplay().getHeight()/3, false);
-                    mPopupWindow.setOutsideTouchable(true);
+                    mPopupWindow.setOutsideTouchable(false);
                     channelPicker = ButterKnife.findById(mPopupWindow.getContentView(),R.id.channelPicker);
                     areaPicker = ButterKnife.findById(mPopupWindow.getContentView(),R.id.areaPicker);
                     categoryPicker = ButterKnife.findById(mPopupWindow.getContentView(),R.id.categoryPicker);

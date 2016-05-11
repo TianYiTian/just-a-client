@@ -1,3 +1,3 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 # just-a-client
-ÊµÑéÒ»ÏÂFrescoÓëRecyclerViewµÄ½áºÏ
+å®éªŒä¸€ä¸‹Frescoä¸RecyclerViewçš„ç»“åˆ
