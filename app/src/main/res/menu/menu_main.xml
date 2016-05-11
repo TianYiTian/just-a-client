@@ -1,6 +1,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:title="what"
-        android:icon="@android:drawable/ic_dialog_info"/>
+        android:title="Info"
+        android:icon="@android:drawable/ic_dialog_info">
+        <menu>
+            <item
+                android:title="练手之作，欢迎随意批评"/>
+        </menu>
+        </item>
+    <item
+        android:title="Email"
+        android:icon="@android:drawable/ic_dialog_email">
+        <menu>
+            <item
+                android:title="Mordenkainen@foxmail.com"/>
+        </menu>
+    </item>
 </menu>
