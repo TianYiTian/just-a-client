@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mToolbar.setTitle("标题");
+        mToolbar.setTitle("嘿嘿嘿");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         mActionBarDrawerToggle.syncState();
         drawer.setDrawerListener(mActionBarDrawerToggle);
 
-        mInfoRecyclerAdapter = new InfoRecyclerAdapter();
+        mInfoRecyclerAdapter = new InfoRecyclerAdapter(this);
         mRecyclerView.setAdapter(mInfoRecyclerAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());

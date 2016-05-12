@@ -1,6 +1,10 @@
 package com.tyt.zimuzu.InfoRecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Paint;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +15,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.tyt.data.html.Info;
+import com.tyt.zimuzu.DetailActivity;
 import com.tyt.zimuzu.R;
 
 import java.util.ArrayList;
@@ -23,8 +28,12 @@ import butterknife.ButterKnife;
  */
 public class InfoRecyclerAdapter extends RecyclerView.Adapter<InfoRecyclerAdapter.MyHolder> {
     private ArrayList<Info> dataList;
-    public InfoRecyclerAdapter(){
+    private Intent mIntent;
+    private Context mContext;
+
+    public InfoRecyclerAdapter(Context context){
         dataList= new ArrayList<Info>();
+        mContext=context;
     }
 
     public void setDataList(ArrayList<Info> arrayList){
@@ -42,8 +51,18 @@ public class InfoRecyclerAdapter extends RecyclerView.Adapter<InfoRecyclerAdapte
     }
 
     @Override
-    public void onBindViewHolder(MyHolder holder, int position) {
+    public void onBindViewHolder(MyHolder holder, final int position) {
+        holder.mTextView.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+        holder.mTextView.getPaint().setAntiAlias(true);
         holder.mTextView.setText(dataList.get(position).getName());
+        holder.mTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mIntent = new Intent(mContext, DetailActivity.class);
+                mIntent.putExtra("URL",dataList.get(position).getInfoURL());
+                mContext.startActivity(mIntent);
+            }
+        });
         holder.mSimpleDraweeView.setImageURI(Uri.parse(dataList.get(position).getImgURL()));
     }
 

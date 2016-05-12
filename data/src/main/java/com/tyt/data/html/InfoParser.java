@@ -35,7 +35,7 @@ public class InfoParser {
 
     public InfoParser(Handler handler) {
         mainHandler=handler;
-        HandlerThread handlerThread = new HandlerThread("network");
+        HandlerThread handlerThread = new HandlerThread("info");
         handlerThread.start();
         mHandler= new Handler(handlerThread.getLooper());
         mHandler.post(new Runnable() {
@@ -89,7 +89,7 @@ public class InfoParser {
                     ArrayList<Info> infoList = new ArrayList<Info>(data.size());
                     for (int i = 0; i < data.size(); i++) {
                         element = data.get(i);
-                        infoList.add(new Info(element.getElementsByClass("fl-info").get(0).getElementsByTag("a").get(0).ownText(), element.getElementsByClass("fl-img").get(0).getElementsByTag("img").get(0).attr("src")));
+                        infoList.add(new Info(element.getElementsByClass("fl-info").get(0).getElementsByTag("a").get(0).ownText(), element.getElementsByClass("fl-img").get(0).getElementsByTag("img").get(0).attr("src"),element.getElementsByTag("a").get(0).attr("href")));
                     }
                     Message message = new Message();
                     message.obj=infoList;
@@ -97,7 +97,7 @@ public class InfoParser {
                     mainHandler.sendMessage(message);
                     isLoading = false;
                 } catch (Exception e) {
-                    Log.w("test", e.toString());
+                    Log.w("info_parser", e.toString());
                 }
             }
         };
