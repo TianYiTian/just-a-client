@@ -89,7 +89,7 @@ public class InfoParser {
                     ArrayList<Info> infoList = new ArrayList<Info>(data.size());
                     for (int i = 0; i < data.size(); i++) {
                         element = data.get(i);
-                        infoList.add(new Info(element.getElementsByClass("fl-info").get(0).getElementsByTag("a").get(0).ownText(), element.getElementsByClass("fl-img").get(0).getElementsByTag("img").get(0).attr("src"),element.getElementsByTag("a").get(0).attr("href")));
+                        infoList.add(new Info(getName(element), getImgURL(element),getInfoURL(element)));
                     }
                     Message message = new Message();
                     message.obj=infoList;
@@ -103,4 +103,15 @@ public class InfoParser {
         };
         mHandler.post(mRunnable);
     }
+
+    private String getName(Element element){
+        return element.getElementsByClass("fl-info").get(0).getElementsByTag("a").get(0).ownText();
+    }
+    private String getImgURL(Element element){
+        return element.getElementsByClass("fl-img").get(0).getElementsByTag("img").get(0).attr("src");
+    }
+    private String getInfoURL(Element element){
+        return element.getElementsByTag("a").get(0).attr("href");
+    }
+
 }

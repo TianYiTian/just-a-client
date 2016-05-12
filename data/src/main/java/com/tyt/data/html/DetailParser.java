@@ -49,11 +49,14 @@ public class DetailParser {
                     Response response = mOkHttpClient.newCall(request).execute();
                     Document document = Jsoup.parse(response.body().string());
                     Element info = document.getElementsByClass("fl-info").first();
-                    Element name = document.getElementsByClass("middle-box").first();
+                    Element download = document.getElementsByClass("download-tab").first();
+                    Element resource = document.getElementsByClass("resource-con").first();
+                    //TODO 前四个li固定，编剧导演演员不固定，简介<div style="display:none;">，
 
-
+                    Detail detail;
                     Message message = new Message();
                     message.what = PARSE_DONE;
+//                    message.obj = detail;
                     mainHandler.sendMessage(message);
                     isLoading=false;
 
@@ -63,5 +66,15 @@ public class DetailParser {
             }
         };
         mHandler.post(mRunnable);
+    }
+
+    private String getDownloadURL(Element download){
+        return "http://www.zimuzu.tv"+download.getElementsByTag("a").attr("href");
+    }
+    private String getName(Element resource){
+        return resource.getElementsByTag("h2").first().text();
+    }
+    private String getNote(Element resource){
+        return resource.getElementsByTag("p").first().text();
     }
 }
