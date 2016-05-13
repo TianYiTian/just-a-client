@@ -9,6 +9,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.util.ArrayList;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -51,12 +53,12 @@ public class DetailParser {
                     Element info = document.getElementsByClass("fl-info").first();
                     Element download = document.getElementsByClass("download-tab").first();
                     Element resource = document.getElementsByClass("resource-con").first();
-                    //TODO 前四个li固定，编剧导演演员不固定，简介<div style="display:none;">，
-
-                    Detail detail;
+                    Detail detail = new Detail(getDownloadURL(download),getName(resource),getNote(resource),getYear(info),getCategory(info),
+                            getArea(info),getStation(info),getLanguage(info),getFirstShow(info),getEnName(info),getScreenWriter(info),
+                            getDirector(info),getActor(info),getIMDB(info),getWebSite(info),getSummary(info));
                     Message message = new Message();
                     message.what = PARSE_DONE;
-//                    message.obj = detail;
+                    message.obj = detail;
                     mainHandler.sendMessage(message);
                     isLoading=false;
 
@@ -75,6 +77,107 @@ public class DetailParser {
         return resource.getElementsByTag("h2").first().text();
     }
     private String getNote(Element resource){
-        return resource.getElementsByTag("p").first().text();
+        String[] strings = resource.getElementsByTag("p").first().text().split("：",2);
+        if (strings.length!=0){
+            return strings[1];
+        }else{
+            return null;
+        }
+    }
+    private String getYear(Element info){
+        return info.getElementsByTag("li").get(0).getElementsByTag("strong").get(0).ownText();
+    }
+    private String getCategory(Element info){
+        return  info.getElementsByTag("li").get(0).getElementsByTag("strong").get(1).ownText();
+    }
+    private String getArea(Element info){
+        return info.getElementsByTag("li").get(1).getElementsByTag("strong").get(0).ownText();
+    }
+    private String getStation(Element info){
+        return info.getElementsByTag("li").get(1).getElementsByTag("strong").get(1).ownText();
+    }
+    private String getLanguage(Element info){
+        return info.getElementsByTag("li").get(2).getElementsByTag("strong").get(0).ownText();
+    }
+    private String getFirstShow(Element info){
+        return info.getElementsByTag("li").get(2).getElementsByTag("strong").get(1).ownText();
+    }
+    private String getEnName(Element info){
+        return info.getElementsByTag("li").get(3).getElementsByTag("strong").size()!=0?info.getElementsByTag("li").get(3).getElementsByTag("strong").first().ownText():info.getElementsByTag("li").get(3).ownText();
+    }
+    private String getSummary(Element info){
+        return info.getElementsByClass("rel").last().getElementsByTag("div").first().ownText();
+    }
+    private ArrayList<Person> getActor(Element info){
+        if (info.getElementsByClass("rel").size()==2){
+            int size = info.getElementsByClass("rel").first().getElementsByTag("a").size();
+            ArrayList<Person> arrayList = new ArrayList<Person>(size);
+            for (int i=0;i<size;i++){
+                arrayList.add(new Person(info.getElementsByClass("rel").first().getElementsByTag("a").get(i).ownText(),
+                        "http://www.zimuzu.tv"+info.getElementsByClass("rel").first().getElementsByTag("a").get(i).attr("href")));
+            }
+            return arrayList;
+        }else{
+            return null;
+        }
+    }
+    private ArrayList<Person> getScreenWriter(Element info){
+        if (info.getElementsByClass("rel").first().getElementsByTag("a").size()!=info.getElementsByTag("a").size()-2) {
+            for (int i = 4; i < info.getElementsByTag("li").size(); i++) {
+                if (info.getElementsByTag("li").get(i).getElementsByAttribute("class").size() != 0&&info.getElementsByTag("li").get(i).getElementsByAttribute("rel").size()==0&&info.getElementsByTag("li").get(i).getElementsByClass("rel").size()==0) {
+                    int size = info.getElementsByTag("li").get(i).getElementsByTag("a").size();
+                    ArrayList<Person> arrayList = new ArrayList<Person>(size);
+                    for (int j = 0; j < size; j++) {
+                        arrayList.add(new Person(info.getElementsByTag("li").get(i).getElementsByTag("a").get(j).ownText(),
+                                "http://www.zimuzu.tv"+info.getElementsByTag("li").get(i).getElementsByTag("a").get(j).attr("href")));
+                    }
+                    return arrayList;
+                }
+            }
+        }
+        return null;
+    }
+
+    private ArrayList<Person> getDirector(Element info) {
+        if (info.getElementsByClass("rel").first().getElementsByTag("a").size()!=info.getElementsByTag("a").size()-2) {
+            int count=0;
+            for (int i = 4; i < info.getElementsByTag("li").size(); i++) {
+                if (info.getElementsByTag("li").get(i).getElementsByAttribute("class").size() != 0&&info.getElementsByTag("li").get(i).getElementsByAttribute("rel").size()==0&&info.getElementsByTag("li").get(i).getElementsByClass("rel").size()==0) {
+                    count += 1;
+                    if (count == 2) {
+                        int size = info.getElementsByTag("li").get(i).getElementsByTag("a").size();
+                        ArrayList<Person> arrayList = new ArrayList<Person>(size);
+                        for (int j = 0; j < size; j++) {
+                            arrayList.add(new Person(info.getElementsByTag("li").get(i).getElementsByTag("a").get(j).ownText(),
+                                    "http://www.zimuzu.tv"+info.getElementsByTag("li").get(i).getElementsByTag("a").get(j).attr("href")));
+                        }
+                        return arrayList;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private String getWebSite(Element info){
+        String string;
+        for (int i=0;i<info.getElementsByAttribute("rel").size();i++){
+            string = info.getElementsByAttribute("rel").get(i).attr("href");
+            if (!string.contains("imdb")){
+                return string;
+            }
+        }
+        return null;
+    }
+
+    private String getIMDB(Element info){
+        String string;
+        for (int i=0;i<info.getElementsByAttribute("rel").size();i++){
+            string = info.getElementsByAttribute("rel").get(i).attr("href");
+            if (string.contains("imdb")){
+                return string;
+            }
+        }
+        return null;
     }
 }

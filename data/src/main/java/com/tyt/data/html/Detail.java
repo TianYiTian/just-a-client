@@ -11,6 +11,7 @@ public class Detail {
     private String note;
     private String year;
     private String category;
+    private String area;
     private String station;
     private String language;
     private String firstShow;
@@ -18,15 +19,17 @@ public class Detail {
     private ArrayList<Person> screenwriter;
     private ArrayList<Person> director;
     private ArrayList<Person> actor;
+    private String imdb;
     private String website;
     private String summary;
 
-    public Detail(String downloadURL,String name,String note,String year,String category,String station,String language,String firstShow,String enName,ArrayList<Person> screenwriter,ArrayList<Person> director,ArrayList<Person> actor,String website,String summary){
+    public Detail(String downloadURL,String name,String note,String year,String category,String area,String station,String language,String firstShow,String enName,ArrayList<Person> screenwriter,ArrayList<Person> director,ArrayList<Person> actor,String imdb,String website,String summary){
         this.downloadURL=downloadURL;
         this.name=name;
         this.note=note;
         this.year=year;
         this.category=category;
+        this.area=area;
         this.station=station;
         this.language=language;
         this.firstShow=firstShow;
@@ -34,6 +37,7 @@ public class Detail {
         this.screenwriter=screenwriter;
         this.director=director;
         this.actor=actor;
+        this.imdb=imdb;
         this.website=website;
         this.summary=summary;
     }
@@ -53,6 +57,11 @@ public class Detail {
     public String getCategory(){
         return category;
     }
+
+    public String getArea() {
+        return area;
+    }
+
     public String getStation(){
         return station;
     }
@@ -75,6 +84,10 @@ public class Detail {
 
     public ArrayList<Person> getDirector() {
         return director;
+    }
+
+    public String getImdb() {
+        return imdb;
     }
 
     public String getWebsite() {
