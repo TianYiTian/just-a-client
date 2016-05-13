@@ -6,23 +6,24 @@ import java.util.ArrayList;
  * Created by TYT on 2016/5/12.
  */
 public class Detail {
-    private String downloadURL;
-    private String name;
-    private String note;
-    private String year;
-    private String category;
-    private String area;
-    private String station;
-    private String language;
-    private String firstShow;
-    private String enName;
-    private ArrayList<Person> screenwriter;
-    private ArrayList<Person> director;
-    private ArrayList<Person> actor;
-    private String imdb;
-    private String website;
-    private String summary;
-    private String imgURL;
+    private String downloadURL=null;
+    private String name=null;
+    private String note=null;
+    private String year=null;
+    private String category=null;
+    private String area=null;
+    private String station=null;
+    private String language=null;
+    private String firstShow=null;
+    private String enName=null;
+    private ArrayList<Person> screenwriter=null;
+    private ArrayList<Person> director=null;
+    private ArrayList<Person> actor=null;
+    private String imdb=null;
+    private String website=null;
+    private String summary=null;
+    private String imgURL=null;
+
 
     public Detail(String downloadURL, String name, String note, String year, String category, String area, String station, String language, String firstShow, String enName, ArrayList<Person> screenwriter, ArrayList<Person> director, ArrayList<Person> actor, String imdb, String website, String summary, String imgURL) {
         this.downloadURL = downloadURL;
@@ -110,5 +111,9 @@ public class Detail {
 
     public String getImgURL() {
         return imgURL;
+    }
+
+    public int getCount(){
+        return 15;
     }
 }
