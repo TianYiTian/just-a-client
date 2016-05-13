@@ -1,11 +1,9 @@
-package com.tyt.zimuzu.InfoRecyclerView;
+package com.tyt.zimuzu.RecyclerViewAdapter;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +18,6 @@ import com.tyt.zimuzu.R;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**

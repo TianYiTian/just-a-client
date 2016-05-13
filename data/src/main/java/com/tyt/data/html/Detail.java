@@ -22,39 +22,45 @@ public class Detail {
     private String imdb;
     private String website;
     private String summary;
+    private String imgURL;
 
-    public Detail(String downloadURL,String name,String note,String year,String category,String area,String station,String language,String firstShow,String enName,ArrayList<Person> screenwriter,ArrayList<Person> director,ArrayList<Person> actor,String imdb,String website,String summary){
-        this.downloadURL=downloadURL;
-        this.name=name;
-        this.note=note;
-        this.year=year;
-        this.category=category;
-        this.area=area;
-        this.station=station;
-        this.language=language;
-        this.firstShow=firstShow;
-        this.enName=enName;
-        this.screenwriter=screenwriter;
-        this.director=director;
-        this.actor=actor;
-        this.imdb=imdb;
-        this.website=website;
-        this.summary=summary;
+    public Detail(String downloadURL, String name, String note, String year, String category, String area, String station, String language, String firstShow, String enName, ArrayList<Person> screenwriter, ArrayList<Person> director, ArrayList<Person> actor, String imdb, String website, String summary, String imgURL) {
+        this.downloadURL = downloadURL;
+        this.name = name;
+        this.note = note;
+        this.year = year;
+        this.category = category;
+        this.area = area;
+        this.station = station;
+        this.language = language;
+        this.firstShow = firstShow;
+        this.enName = enName;
+        this.screenwriter = screenwriter;
+        this.director = director;
+        this.actor = actor;
+        this.imdb = imdb;
+        this.website = website;
+        this.summary = summary;
+        this.imgURL = imgURL;
     }
 
-    public String getDownloadURL(){
+    public String getDownloadURL() {
         return downloadURL;
     }
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    public String getNote(){
+
+    public String getNote() {
         return note;
     }
-    public String getYear(){
+
+    public String getYear() {
         return year;
     }
-    public String getCategory(){
+
+    public String getCategory() {
         return category;
     }
 
@@ -62,19 +68,23 @@ public class Detail {
         return area;
     }
 
-    public String getStation(){
+    public String getStation() {
         return station;
     }
-    public String getLanguage(){
+
+    public String getLanguage() {
         return language;
     }
-    public String getFirstShow(){
+
+    public String getFirstShow() {
         return firstShow;
     }
-    public String getEnName(){
+
+    public String getEnName() {
         return enName;
     }
-    public ArrayList<Person> getScreenwriter(){
+
+    public ArrayList<Person> getScreenwriter() {
         return screenwriter;
     }
 
@@ -96,5 +106,9 @@ public class Detail {
 
     public String getSummary() {
         return summary;
+    }
+
+    public String getImgURL() {
+        return imgURL;
     }
 }

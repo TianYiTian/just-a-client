@@ -55,7 +55,7 @@ public class DetailParser {
                     Element resource = document.getElementsByClass("resource-con").first();
                     Detail detail = new Detail(getDownloadURL(download),getName(resource),getNote(resource),getYear(info),getCategory(info),
                             getArea(info),getStation(info),getLanguage(info),getFirstShow(info),getEnName(info),getScreenWriter(info),
-                            getDirector(info),getActor(info),getIMDB(info),getWebSite(info),getSummary(info));
+                            getDirector(info),getActor(info),getIMDB(info),getWebSite(info),getSummary(info),getImgURL(document));
                     Message message = new Message();
                     message.what = PARSE_DONE;
                     message.obj = detail;
@@ -179,5 +179,8 @@ public class DetailParser {
             }
         }
         return null;
+    }
+    private String getImgURL(Document document){
+        return document.getElementsByClass("fl-img").first().getElementsByTag("a").first().attr("href");
     }
 }

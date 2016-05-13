@@ -1,13 +1,10 @@
 package com.tyt.zimuzu;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,9 +12,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.text.method.KeyListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +26,10 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.tyt.data.html.Category;
 import com.tyt.data.html.Info;
 import com.tyt.data.html.InfoParser;
-import com.tyt.zimuzu.InfoRecyclerView.InfoRecyclerAdapter;
+import com.tyt.zimuzu.RecyclerViewAdapter.InfoRecyclerAdapter;
 
 import java.util.ArrayList;
 
@@ -116,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        //TODO drawer head图片加载瞬间爆炸
 
         mToolbar.setTitle("嘿嘿嘿");
         setSupportActionBar(mToolbar);
@@ -206,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
