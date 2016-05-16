@@ -10,9 +10,17 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.Exchanger;
 
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.FormBody;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -25,6 +33,7 @@ public class DetailParser {
     private Runnable mRunnable;
     private boolean isLoading = false;
     public static final int PARSE_DONE = 1;
+    volatile private List<Cookie> cookies =null;
 
     public DetailParser(Handler handler){
         mainHandler=handler;
@@ -34,7 +43,27 @@ public class DetailParser {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                mOkHttpClient = new OkHttpClient();
+                mOkHttpClient = new OkHttpClient.Builder().cookieJar(new CookieJar() {
+                    @Override
+                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                        if (url.toString().equals("http://www.zimuzu.tv/User/Login/ajaxLogin")) {
+                            List<Cookie> list = new ArrayList<Cookie>();
+                            list.add(cookies.get(0));
+                            list.add(cookies.get(3));
+                            list.add(cookies.get(4));
+                            DetailParser.this.cookies = list;
+                        }
+                    }
+
+                    @Override
+                    public List<Cookie> loadForRequest(HttpUrl url) {
+                        if (cookies==null){
+                        return Collections.emptyList();
+                        }else{
+                            return DetailParser.this.cookies;
+                        }
+                    }
+                }).build();
             }
         });
     }
@@ -61,6 +90,22 @@ public class DetailParser {
                     message.obj = detail;
                     mainHandler.sendMessage(message);
                     isLoading=false;
+                    RequestBody requestBody = new FormBody.Builder().add("account","1171430829@qq.com").add("password","tyttyt93").add("remember","1").build();
+                    Request request1 = new Request.Builder().url("http://www.zimuzu.tv/User/Login/ajaxLogin").post(requestBody).header("Content-Type","application/x-www-form-urlencoded").addHeader("Connection","keep-alive").build();
+                    Response response1 = mOkHttpClient.newCall(request1).execute();
+                    String s = response1.toString();
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Request request2 = new Request.Builder().url("http://www.zimuzu.tv/user/login/getCurUserTopInfo").header("Host","www.zimuzu.tv").addHeader("Connection","keep-alive").build();
+                                Response response2 = mOkHttpClient.newCall(request2).execute();
+                                String aa = response2.toString();
+                            }catch (Exception e){}
+                        }
+                    },1000);
+
+
 
                 }catch (Exception e){
                     Log.w("detail_parser",e.toString());
