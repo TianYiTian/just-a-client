@@ -5,6 +5,8 @@ import android.os.HandlerThread;
 import android.os.Message;
 import android.util.Log;
 
+import com.tyt.data.http.OkHttpUtil;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -40,7 +42,7 @@ public class DetailParser {
         HandlerThread handlerThread = new HandlerThread("detail");
         handlerThread.start();
         mHandler = new Handler(handlerThread.getLooper());
-        mHandler.post(new Runnable() {
+       /* mHandler.post(new Runnable() {
             @Override
             public void run() {
                 mOkHttpClient = new OkHttpClient.Builder().cookieJar(new CookieJar() {
@@ -65,7 +67,8 @@ public class DetailParser {
                     }
                 }).build();
             }
-        });
+        });*/
+        mOkHttpClient = OkHttpUtil.sOkHttpClient;
     }
     public void parse(final String URL){
         if (isLoading){
@@ -90,7 +93,7 @@ public class DetailParser {
                     message.obj = detail;
                     mainHandler.sendMessage(message);
                     isLoading=false;
-                    RequestBody requestBody = new FormBody.Builder().add("account","1171430829@qq.com").add("password","tyttyt93").add("remember","1").build();
+                    RequestBody requestBody = new FormBody.Builder().add("account","1171430829@qq.com").add("password","tytt93").add("remember","1").build();
                     Request request1 = new Request.Builder().url("http://www.zimuzu.tv/User/Login/ajaxLogin").post(requestBody).header("Content-Type","application/x-www-form-urlencoded").addHeader("Connection","keep-alive").build();
                     Response response1 = mOkHttpClient.newCall(request1).execute();
                     String s = response1.toString();

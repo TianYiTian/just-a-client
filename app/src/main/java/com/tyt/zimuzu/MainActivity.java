@@ -1,10 +1,12 @@
 package com.tyt.zimuzu;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +28,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.tyt.data.constant.Constance;
 import com.tyt.data.html.Category;
 import com.tyt.data.html.Info;
 import com.tyt.data.html.InfoParser;
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.page_control)RelativeLayout pageControl;
     @Bind(R.id.fab)FloatingActionButton fab;
     @Bind(R.id.drawer)DrawerLayout drawer;
+    @Bind(R.id.navigation)NavigationView navigation;
 
     private InfoRecyclerAdapter mInfoRecyclerAdapter;
     private int channel =0;
@@ -138,6 +142,18 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.login:
+                        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                        startActivityForResult(intent, Constance.LOGIN_CODE);
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     @OnClick({R.id.prepage,R.id.nextpage,R.id.fab})
@@ -197,6 +213,23 @@ public class MainActivity extends AppCompatActivity {
                     fab.setImageResource(android.R.drawable.ic_menu_save);
                     mPopupWindow.showAsDropDown(pageControl);
                 }
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case Constance.LOGIN_CODE:
+                switch (resultCode){
+                    case Constance.LOGIN_SUCCESSFUL:
+                        break;
+                    case Constance.LOGIN_FAILED:
+                        break;
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
                 break;
         }
     }
