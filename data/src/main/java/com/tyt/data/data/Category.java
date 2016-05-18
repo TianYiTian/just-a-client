@@ -1,11 +1,8 @@
-package com.tyt.data.html;
+package com.tyt.data.data;
 
-import android.os.Build;
 import android.util.Log;
 
 import com.tyt.data.BuildConfig;
-
-import java.util.ArrayList;
 
 /**
  * Created by TYT on 2016/5/10.

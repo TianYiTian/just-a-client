@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.tyt.data.html.Info;
+import com.tyt.data.data.Info;
 import com.tyt.zimuzu.DetailActivity;
 import com.tyt.zimuzu.R;
 

@@ -29,9 +29,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tyt.data.constant.Constance;
-import com.tyt.data.html.Category;
-import com.tyt.data.html.Info;
+import com.tyt.data.data.Category;
+import com.tyt.data.data.Info;
 import com.tyt.data.html.InfoParser;
+import com.tyt.data.data.User;
+import com.tyt.data.http.OkHttpUtil;
+import com.tyt.data.json.UserLoader;
 import com.tyt.zimuzu.RecyclerViewAdapter.InfoRecyclerAdapter;
 
 import java.util.ArrayList;
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private NumberPicker yearPicker;
     private NumberPicker sortPicker;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
+    private User user;
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -154,6 +158,15 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        if (((MyApplication)getApplication()).getSettingHelper().getAutoLogin()){
+            ((MyApplication)getApplication()).getHandler().post(new Runnable() {
+                @Override
+                public void run() {
+                    user = UserLoader.loadUserInfo().getUser();
+                    //TODO
+                }
+            });
+        }
     }
 
     @OnClick({R.id.prepage,R.id.nextpage,R.id.fab})
@@ -242,5 +255,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setUserUI(User user) {
     }
 }

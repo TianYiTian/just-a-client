@@ -1,10 +1,13 @@
 package com.tyt.data.html;
 
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.util.Log;
+
+import com.tyt.data.data.Category;
+import com.tyt.data.data.Info;
+import com.tyt.data.http.OkHttpUtil;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -38,12 +41,7 @@ public class InfoParser {
         HandlerThread handlerThread = new HandlerThread("info");
         handlerThread.start();
         mHandler= new Handler(handlerThread.getLooper());
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                mOkHttpClient = new OkHttpClient();
-            }
-        });
+        mOkHttpClient= OkHttpUtil.getOkHttpClient();
     }
 
     /*public static Infoparser getInstance() {

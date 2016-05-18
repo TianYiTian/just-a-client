@@ -12,16 +12,14 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.tyt.data.html.Detail;
+import com.tyt.data.data.Detail;
 import com.tyt.data.html.DetailParser;
 import com.tyt.zimuzu.RecyclerViewAdapter.DetailRecyclerAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by TYT on 2016/5/12.

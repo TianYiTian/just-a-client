@@ -1,14 +1,10 @@
 package com.tyt.data.http;
 
-import android.os.HandlerThread;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.FormBody;
@@ -22,7 +18,7 @@ import okhttp3.Response;
  * Created by TYT on 2016/5/17.
  */
 public class OkHttpUtil {
-    public static OkHttpClient sOkHttpClient = null;
+    private static OkHttpClient sOkHttpClient = null;
     private static ArrayList<Cookie> sCookies = null;
     static {
 
@@ -42,7 +38,7 @@ public class OkHttpUtil {
 
             @Override
             public List<Cookie> loadForRequest(HttpUrl url) {
-                if (sCookies==null){
+                if (sCookies==null||sCookies.size()==0){
                     return Collections.emptyList();
                 }else{
                     return sCookies;
@@ -56,4 +52,17 @@ public class OkHttpUtil {
         Response response = sOkHttpClient.newCall(request).execute();
         return sCookies!=null;
     }
+
+    public static ArrayList<Cookie> getCookies() {
+        return sCookies;
+    }
+
+    public static OkHttpClient getOkHttpClient() {
+        return sOkHttpClient;
+    }
+
+    public static void setCookies(ArrayList<Cookie> cookies) {
+        sCookies = cookies;
+    }
+
 }

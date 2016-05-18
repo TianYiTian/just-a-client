@@ -5,6 +5,8 @@ import android.os.HandlerThread;
 import android.os.Message;
 import android.util.Log;
 
+import com.tyt.data.data.Detail;
+import com.tyt.data.data.Person;
 import com.tyt.data.http.OkHttpUtil;
 
 import org.jsoup.Jsoup;
@@ -12,17 +14,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Exchanger;
 
 import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.FormBody;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -68,7 +64,7 @@ public class DetailParser {
                 }).build();
             }
         });*/
-        mOkHttpClient = OkHttpUtil.sOkHttpClient;
+        mOkHttpClient = OkHttpUtil.getOkHttpClient();
     }
     public void parse(final String URL){
         if (isLoading){
@@ -93,23 +89,6 @@ public class DetailParser {
                     message.obj = detail;
                     mainHandler.sendMessage(message);
                     isLoading=false;
-                    RequestBody requestBody = new FormBody.Builder().add("account","1171430829@qq.com").add("password","tytt93").add("remember","1").build();
-                    Request request1 = new Request.Builder().url("http://www.zimuzu.tv/User/Login/ajaxLogin").post(requestBody).header("Content-Type","application/x-www-form-urlencoded").addHeader("Connection","keep-alive").build();
-                    Response response1 = mOkHttpClient.newCall(request1).execute();
-                    String s = response1.toString();
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                Request request2 = new Request.Builder().url("http://www.zimuzu.tv/user/login/getCurUserTopInfo").header("Host","www.zimuzu.tv").addHeader("Connection","keep-alive").build();
-                                Response response2 = mOkHttpClient.newCall(request2).execute();
-                                String aa = response2.toString();
-                            }catch (Exception e){}
-                        }
-                    },1000);
-
-
-
                 }catch (Exception e){
                     Log.w("detail_parser",e.toString());
                 }

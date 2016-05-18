@@ -18,9 +18,12 @@ import android.widget.Toast;
 import com.tyt.data.constant.Constance;
 import com.tyt.data.http.OkHttpUtil;
 
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Cookie;
 import okhttp3.OkHttpClient;
 
 /**
@@ -50,12 +53,6 @@ public class LoginActivity extends AppCompatActivity {
                 Log.w("login","goback");
             }
         });*/
-        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return false;
-            }
-        });
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -82,6 +79,13 @@ public class LoginActivity extends AppCompatActivity {
                         success = OkHttpUtil.login(username.getText().toString(), password.getText().toString(), rememberstring);
                         showLoginMessage(success);
                         if (success) {
+                            if (remember.isChecked()){
+                                ((MyApplication)getApplication()).getCookieHelper().writeCookies(OkHttpUtil.getCookies());
+                                ((MyApplication)getApplication()).getSettingHelper().setAutoLogin(true);
+                            }else{
+                                ((MyApplication)getApplication()).getCookieHelper().clearCookies();
+                                ((MyApplication)getApplication()).getSettingHelper().setAutoLogin(false);
+                            }
                             setResult(Constance.LOGIN_SUCCESSFUL);
                             LoginActivity.this.finish();
                         }
@@ -129,4 +133,6 @@ public class LoginActivity extends AppCompatActivity {
         setResult(Constance.LOGIN_FAILED);
         this.finish();
     }
+
+
 }
