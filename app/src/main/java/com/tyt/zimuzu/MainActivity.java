@@ -14,6 +14,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -162,8 +163,13 @@ public class MainActivity extends AppCompatActivity {
             ((MyApplication)getApplication()).getHandler().post(new Runnable() {
                 @Override
                 public void run() {
-                    user = UserLoader.loadUserInfo().getUser();
-                    //TODO
+                    try {
+                        OkHttpUtil.setCookies(((MyApplication) getApplication()).getCookieHelper().readCookies());
+                        boolean success = UserLoader.load();
+                        //TODO
+                    }catch (Exception e){
+                        Log.w("autologin",e.getMessage());
+                    }
                 }
             });
         }

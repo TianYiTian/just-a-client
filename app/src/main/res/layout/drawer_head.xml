@@ -17,7 +17,6 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
         app:actualImageScaleType="focusCrop"
-        app:backgroundImage="@drawable/head"
         app:roundAsCircle="true"
         app:roundedCornerRadius="5dp"/>
 
@@ -29,15 +28,6 @@
         android:layout_below="@id/head"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:text="唐御天"
         android:textColor="@android:color/white"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/name"
-        android:layout_below="@id/name"
-        android:layout_marginTop="5dp"
-        android:text="https://github.com/TianYiTian"
-        android:textColor="@android:color/white"/>
 </RelativeLayout>

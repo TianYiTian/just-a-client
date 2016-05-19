@@ -2,20 +2,33 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <group>
         <item
-            android:title="登录"
-            android:id="@+id/login"/>
+            android:id="@+id/login"
+            android:title="登录"/>
     </group>
     <item
-        android:title="Info"
-        android:icon="@android:drawable/ic_dialog_info">
+        android:title="作者">
+        <menu>
+            <item
+                android:title="唐御天"/>
+        </menu>
+    </item>
+    <item
+        android:title="github">
+        <menu>
+            <item
+                android:title="https://github.com/TianYiTian"/>
+        </menu>
+    </item>
+    <item
+        android:title="Info">
         <menu>
             <item
                 android:title="练手之作，欢迎随意批评"/>
         </menu>
-        </item>
+    </item>
+
     <item
-        android:title="Email"
-        android:icon="@android:drawable/ic_dialog_email">
+        android:title="Email">
         <menu>
             <item
                 android:title="Mordenkainen@foxmail.com"/>
