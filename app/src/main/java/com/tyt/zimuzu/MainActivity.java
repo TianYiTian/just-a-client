@@ -2,6 +2,7 @@ package com.tyt.zimuzu;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +30,9 @@ import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.tyt.data.constant.Constance;
 import com.tyt.data.data.Category;
 import com.tyt.data.data.Info;
@@ -55,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.drawer)DrawerLayout drawer;
     @Bind(R.id.navigation)NavigationView navigation;
 
+
+    private TextView name;
+    private SimpleDraweeView head;
     private InfoRecyclerAdapter mInfoRecyclerAdapter;
     private int channel =0;
     private int area =0;
@@ -71,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private NumberPicker sortPicker;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
     private User user;
+    private boolean login=false;
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -112,13 +120,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    //TODO 搜索，详情页，新闻，时间表
+    //TODO 搜索，新闻，时间表，下载页
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        //TODO drawer head图片加载瞬间爆炸
 
         mToolbar.setTitle("嘿嘿嘿");
         setSupportActionBar(mToolbar);
@@ -128,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
         mActionBarDrawerToggle.syncState();
         drawer.setDrawerListener(mActionBarDrawerToggle);
 
+        head = ButterKnife.findById(navigation.getHeaderView(0),R.id.head);
+        name= ButterKnife.findById(navigation.getHeaderView(0),R.id.name);
         mInfoRecyclerAdapter = new InfoRecyclerAdapter(this);
         mRecyclerView.setAdapter(mInfoRecyclerAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -147,29 +156,30 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.login:
-                        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-                        startActivityForResult(intent, Constance.LOGIN_CODE);
-                        return true;
-                }
-                return false;
-            }
-        });
         if (((MyApplication)getApplication()).getSettingHelper().getAutoLogin()){
-            ((MyApplication)getApplication()).getHandler().post(new Runnable() {
+            Toast toast =   Toast.makeText(this,"自动登录中",Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER,0,0);
+            toast.show();
+            OkHttpUtil.setCookies(((MyApplication) getApplication()).getCookieHelper().readCookies());
+            loadUser();
+        }
+        setLoginAction(login);
+    }
+    private void setLoginAction(boolean login){
+        if (login){
+            //TODO 用户信息页面,toastutil
+            head.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void run() {
-                    try {
-                        OkHttpUtil.setCookies(((MyApplication) getApplication()).getCookieHelper().readCookies());
-                        boolean success = UserLoader.load();
-                        //TODO
-                    }catch (Exception e){
-                        Log.w("autologin",e.getMessage());
-                    }
+                public void onClick(View v) {
+
+                }
+            });
+        }else{
+            head.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                    startActivityForResult(intent, Constance.LOGIN_CODE);
                 }
             });
         }
@@ -242,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
             case Constance.LOGIN_CODE:
                 switch (resultCode){
                     case Constance.LOGIN_SUCCESSFUL:
+                        loadUser();
                         break;
                     case Constance.LOGIN_FAILED:
                         break;
@@ -251,6 +262,41 @@ public class MainActivity extends AppCompatActivity {
                 super.onActivityResult(requestCode, resultCode, data);
                 break;
         }
+    }
+
+    private void loadUser(){
+        ((MyApplication)getApplication()).getHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    boolean success = UserLoader.load();
+                    //TODO
+                    if (success){
+                        setLoginAction(login=true);
+                        setUserUI(UserLoader.getLoginStatus().getUserinfo().getUser());
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast toast =     Toast.makeText(MainActivity.this,"自动登录成功", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER,0,0);
+                                toast.show();
+                            }
+                        });
+                    }else{
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast toast =     Toast.makeText(MainActivity.this,"自动登录失败", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER,0,0);
+                                toast.show();
+                            }
+                        });
+                    }
+                }catch (Exception e){
+                    Log.w("autologin",e.getMessage());
+                }
+            }
+        });
     }
 
     @Override
@@ -263,6 +309,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setUserUI(User user) {
+    private void setUserUI(final User user) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                head.setImageURI(Uri.parse(user.getImgURL()));
+                name.setText(user.getNickname());
+            }
+        });
     }
 }

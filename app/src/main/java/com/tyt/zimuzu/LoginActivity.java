@@ -88,6 +88,9 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             setResult(Constance.LOGIN_SUCCESSFUL);
                             LoginActivity.this.finish();
+                        }else{
+                            ((MyApplication)getApplication()).getCookieHelper().clearCookies();
+                            ((MyApplication)getApplication()).getSettingHelper().setAutoLogin(false);
                         }
                     }catch (Exception e){
                         Log.w("login",e.toString());
