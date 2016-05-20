@@ -171,7 +171,8 @@ public class MainActivity extends AppCompatActivity {
             head.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent intent = new Intent(MainActivity.this,UserActivity.class);
+                    startActivityForResult(intent,Constance.USER_CODE);
                 }
             });
         }else{
