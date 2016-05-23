@@ -46,12 +46,12 @@ public class UserActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeActionContentDescription("login");
         head.setImageURI(Uri.parse(UserLoader.getLoginStatus().getUserinfo().getUser().getImgURL()));
-        //uid.setText(UserLoader.getLoginStatus().getUserinfo().getUser().getUid());
+        uid.setText(""+UserLoader.getLoginStatus().getUserinfo().getUser().getUid());
         name.setText(UserLoader.getLoginStatus().getUserinfo().getUser().getNickname());
         group_name.setText(UserLoader.getLoginStatus().getUserinfo().getUser().getGroup_name());
-        //follw_unread_num.setText(UserLoader.getLoginStatus().getUserinfo().getFollow_unread_num());
-        //message_unread_num.setText(UserLoader.getLoginStatus().getUserinfo().getMessage_unread_num());
-        //reply_unread_num.setText(UserLoader.getLoginStatus().getUserinfo().getReply_unread_num());
+        follw_unread_num.setText(""+UserLoader.getLoginStatus().getUserinfo().getFollow_unread_num());
+        message_unread_num.setText(""+UserLoader.getLoginStatus().getUserinfo().getMessage_unread_num());
+        reply_unread_num.setText(""+UserLoader.getLoginStatus().getUserinfo().getReply_unread_num());
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

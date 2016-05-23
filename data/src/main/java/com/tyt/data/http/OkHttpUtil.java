@@ -33,6 +33,8 @@ public class OkHttpUtil {
                         sCookies.add(cookies.get(3));
                         sCookies.add(cookies.get(4));
                     }
+                }else if (url.toString().equals("http://www.zimuzu.tv/user/logout/ajaxLogout")){
+                    sCookies=null;
                 }
             }
 
@@ -51,6 +53,11 @@ public class OkHttpUtil {
         Request request = new Request.Builder().url("http://www.zimuzu.tv/User/Login/ajaxLogin").post(requestBody).build();
         Response response = sOkHttpClient.newCall(request).execute();
         return sCookies!=null;
+    }
+    public static boolean logout()throws IOException{
+        Request request = new Request.Builder().url("http://www.zimuzu.tv/user/logout/ajaxLogout").build();
+        Response response = sOkHttpClient.newCall(request).execute();
+        return response.isSuccessful();
     }
 
     public static ArrayList<Cookie> getCookies() {

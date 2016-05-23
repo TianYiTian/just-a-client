@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 Toast toast = Toast.makeText(LoginActivity.this.getApplicationContext(), s, Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER,0,0);
-                toast.show();
+                //toast.show();
             }
         });
     }
