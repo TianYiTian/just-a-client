@@ -79,7 +79,14 @@ public class InfoParser {
                 try {
                     isLoading=true;
                     int findpage = page+whichpage;
-                    Request request = new Request.Builder().url("http://www.zimuzu.tv/eresourcelist?page=" + findpage + "&channel=" + channel + "&area=" + area + "&category=" + category + "&format=&year=" + year + "&sort=" + sort).build();
+                    Request request1 = new Request.Builder().url("http://www.zimuzu.tv/").build();
+                    Response response1 = mOkHttpClient.newCall(request1).execute();
+                    String s = response1.body().string();
+
+                    Request request2 = new Request.Builder().url("http://www.zimuzu.tv/?security_verify_data=313730362c393630").build();
+                    Response response2 = mOkHttpClient.newCall(request2).execute();
+                    ///Request request = new Request.Builder().url("http://www.zimuzu.tv/eresourcelist?page=" + findpage + "&channel=" + channel + "&area=" + area + "&category=" + category + "&format=&year=" + year + "&sort=" + sort).header("Referer","http://www.zimuzu.tv/?security_verify_data=313730362c393630").build();
+                    Request request = new Request.Builder().url("http://www.zimuzu.tv/eresourcelist?security_verify_data=313730362c393630").build();
                     Response response = mOkHttpClient.newCall(request).execute();
                     Document document = Jsoup.parse(response.body().string());
                     Elements data = document.getElementsByClass("resource-showlist").get(0).getElementsByTag("li");

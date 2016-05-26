@@ -19,22 +19,33 @@ import okhttp3.Response;
  */
 public class OkHttpUtil {
     private static OkHttpClient sOkHttpClient = null;
-    private static ArrayList<Cookie> sCookies = null;
+    private static ArrayList<Cookie> sCookies = new ArrayList<Cookie>(6);
     static {
+        sCookies.add(new Cookie.Builder().domain("zimuzu.tv").path("/").httpOnly().name("srcurl").value("687474703a2f2f7777772e7a696d757a752e74762f").build());
 
         sOkHttpClient = new OkHttpClient.Builder().cookieJar(new CookieJar() {
             @Override
             public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-                if (url.toString().equals("http://www.zimuzu.tv/User/Login/ajaxLogin")) {
-                    sCookies = null;
-                    if (cookies.size()>1){
-                        sCookies = new ArrayList<Cookie>();
+                if (cookies.size()==1){
+                    if (cookies.get(0).name().equals("yunsuo_session_verify")){
                         sCookies.add(cookies.get(0));
-                        sCookies.add(cookies.get(3));
-                        sCookies.add(cookies.get(4));
                     }
-                }else if (url.toString().equals("http://www.zimuzu.tv/user/logout/ajaxLogout")){
-                    sCookies=null;
+                    if (cookies.get(0).name().equals("security_session_mid_verify")){
+                        sCookies.add(cookies.get(0));
+                    }
+                }else {
+                    if (url.toString().equals("http://www.zimuzu.tv/User/Login/ajaxLogin")) {
+                        sCookies = null;
+                        if (cookies.size() > 1) {
+                            sCookies = new ArrayList<Cookie>();
+                            sCookies.add(cookies.get(0));
+                            sCookies.add(cookies.get(3));
+                            sCookies.add(cookies.get(4));
+                        }
+                    } else if (url.toString().equals("http://www.zimuzu.tv/user/logout/ajaxLogout")) {
+                        sCookies = new ArrayList<Cookie>(6);
+                        sCookies.add(new Cookie.Builder().domain("zimuzu.tv").path("/").httpOnly().name("srcurl").value("687474703a2f2f7777772e7a696d757a752e74762f").build());
+                    }
                 }
             }
 
