@@ -23,7 +23,13 @@ public class CookieHelper {
         if (cookies!=null){
             SharedPreferences.Editor editor = mPreferHelper.getEditor();
             for (int i =0;i<cookies.size();i++){
-                wirteCookie(editor,cookies.get(i));
+                if (cookies.get(i).name().equals("GINFO")){
+                    wirteCookie(editor,cookies.get(i));
+                }
+                if (cookies.get(i).name().equals("GKEY")){
+                    wirteCookie(editor,cookies.get(i));
+                }
+
             }
             editor.commit();
         }

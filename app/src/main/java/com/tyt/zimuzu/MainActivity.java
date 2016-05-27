@@ -136,6 +136,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        ((MyApplication) getApplication()).getHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpUtil.getYunsuo();
+                }catch (Exception e){
+                    Log.w("yunsuo",e.getMessage());
+                }
+            }
+        });
 
         mToolbar.setTitle("嘿嘿嘿");
         setSupportActionBar(mToolbar);
@@ -153,12 +163,32 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
         mInfoParser = new InfoParser(mHandler);
-        mInfoParser.parse(channel, area, category, year, sort, page, InfoParser.PARSE_CURRENT);
+        ((MyApplication) getApplication()).getHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mInfoParser.parse(channel, area, category, year, sort, page, InfoParser.PARSE_CURRENT);
+                }catch (Exception e){
+                    Log.w("infoparser",e.getMessage());
+                }
+            }
+        });
+
         pageNumber.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            public boolean onEditorAction(final TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    mInfoParser.parse(channel, area, category, year, sort, Integer.parseInt(v.getText().toString()), InfoParser.PARSE_CURRENT);
+                    ((MyApplication) getApplication()).getHandler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                mInfoParser.parse(channel, area, category, year, sort, Integer.parseInt(v.getText().toString()), InfoParser.PARSE_CURRENT);
+                            }catch (Exception e){
+                                Log.w("infoparser",e.getMessage());
+                            }
+                        }
+                    });
+
                     InputMethodManager inputmanger = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     inputmanger.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     return true;
@@ -170,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(this, "自动登录中", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
-            OkHttpUtil.setCookies(((MyApplication) getApplication()).getCookieHelper().readCookies());
+            OkHttpUtil.addCookies(((MyApplication) getApplication()).getCookieHelper().readCookies());
             loadUser();
         }
         setLoginAction(login);
@@ -200,10 +230,29 @@ public class MainActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.prepage:
-                mInfoParser.parse(channel, area, category, year, sort, page, InfoParser.PARSE_PREVIOUS);
+                ((MyApplication) getApplication()).getHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            mInfoParser.parse(channel, area, category, year, sort, page, InfoParser.PARSE_PREVIOUS);
+                        }catch (Exception e){
+                            Log.w("infoparser",e.getMessage());
+                        }
+                    }
+                });
+
                 break;
             case R.id.nextpage:
-                mInfoParser.parse(channel, area, category, year, sort, page, InfoParser.PARSE_NEXTPAGE);
+                ((MyApplication) getApplication()).getHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            mInfoParser.parse(channel, area, category, year, sort, page, InfoParser.PARSE_NEXTPAGE);
+                        }catch (Exception e){
+                            Log.w("infoparser",e.getMessage());
+                        }
+                    }
+                });
                 break;
             case R.id.fab:
                 if (mPopupWindow == null) {
@@ -247,7 +296,17 @@ public class MainActivity extends AppCompatActivity {
                     category = categoryPicker.getValue();
                     year = yearPicker.getValue();
                     sort = sortPicker.getValue();
-                    mInfoParser.parse(channel, area, category, year, sort, 1, InfoParser.PARSE_CURRENT);
+                    ((MyApplication) getApplication()).getHandler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                mInfoParser.parse(channel, area, category, year, sort, 1, InfoParser.PARSE_CURRENT);
+                            }catch (Exception e){
+                                Log.w("infoparser",e.getMessage());
+                            }
+                        }
+                    });
+
                     pageNumber.setText("1");
                 } else {
                     fab.setImageResource(android.R.drawable.ic_menu_save);

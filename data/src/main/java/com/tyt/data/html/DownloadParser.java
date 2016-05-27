@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.tyt.data.data.Download;
+import com.tyt.data.data.Season;
 import com.tyt.data.data.SeasonDownload;
 import com.tyt.data.http.OkHttpUtil;
 
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 
 import okhttp3.Request;
@@ -30,21 +32,18 @@ public class DownloadParser {
         Response response = OkHttpUtil.getOkHttpClient().newCall(request).execute();
         Document document = Jsoup.parse(response.body().string());
         int count = document.getElementsByClass("media-tab").get(0).childNodeSize();
-        HashMap<String,String> titles = new HashMap<String, String>(count);
+        ArrayList<Season> titles = new ArrayList<Season>(count);
         for (int i =0;i<count;i++){
-            titles.put(document.getElementsByClass("media-tab").get(0).children().get(i).attr("season"),document.getElementsByClass("media-tab").get(0).children().get(i).ownText());
+            titles.add(new Season(Integer.parseInt(document.getElementsByClass("media-tab").get(0).children().get(i).attr("season")),document.getElementsByClass("media-tab").get(0).children().get(i).ownText()));
         }//TODO titles.entrySet.iterator,根据键名存
         String name;
         ArrayList<SeasonDownload> seasons = new ArrayList<SeasonDownload>();
-        Iterator<Map.Entry<String,String>> iterator = titles.entrySet().iterator();
-        Map.Entry<String,String> piece;
-        while (iterator.hasNext()){
-            piece = iterator.next();
-            ArrayList<Download> download = new ArrayList<Download>();
-            for (int i =1;i<document.getElementsByAttributeValue("season",piece.getKey()).size();i++){
-                download.add(new Download(document.getElementsByAttributeValue("season",piece.getKey()).get(i)));
+        for (int i =0;i<titles.size();i++){
+            LinkedList<Download> download = new LinkedList<Download>();
+            for (int j =1;j<document.getElementsByAttributeValue("season",""+titles.get(i).getId()).size();j++){
+                download.add(new Download(document.getElementsByAttributeValue("season",""+titles.get(i).getId()).get(j)));
             }
-            seasons.add(new SeasonDownload(piece.getValue(),download));
+            seasons.add(new SeasonDownload(titles.get(i).getName(),download));
         }
         Log.w("seasons",""+seasons.size());
         return null;

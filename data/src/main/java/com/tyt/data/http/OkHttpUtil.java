@@ -1,5 +1,7 @@
 package com.tyt.data.http;
 
+import android.accounts.Account;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,28 +28,58 @@ public class OkHttpUtil {
         sOkHttpClient = new OkHttpClient.Builder().cookieJar(new CookieJar() {
             @Override
             public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-                if (cookies.size()==1){
-                    if (cookies.get(0).name().equals("yunsuo_session_verify")){
+                /*if (cookies.size()==1){
+                    *//*if (cookies.get(0).name().equals("yunsuo_session_verify")){
                         sCookies.add(cookies.get(0));
                     }
                     if (cookies.get(0).name().equals("security_session_mid_verify")){
                         sCookies.add(cookies.get(0));
+                    }*//*
+                    int count =-1;
+                    for (int i =0;i<sCookies.size();i++){
+                        if (sCookies.get(i).name().equals(cookies.get(0).name())){
+                            count=i;
+                        }
+                    }
+                    if (count==-1){
+                        sCookies.add(cookies.get(0));
+                    }else{
+                        sCookies.set(count,cookies.get(0));
                     }
                 }else {
                     if (url.toString().equals("http://www.zimuzu.tv/User/Login/ajaxLogin")) {
-                        sCookies = null;
                         if (cookies.size() > 1) {
                             sCookies = new ArrayList<Cookie>();
                             sCookies.add(cookies.get(0));
                             sCookies.add(cookies.get(3));
                             sCookies.add(cookies.get(4));
                         }
-                    } else if (url.toString().equals("http://www.zimuzu.tv/user/logout/ajaxLogout")) {
+                    }
+                    if (url.toString().equals("http://www.zimuzu.tv/user/logout/ajaxLogout")) {
                         sCookies = new ArrayList<Cookie>(6);
                         sCookies.add(new Cookie.Builder().domain("zimuzu.tv").path("/").httpOnly().name("srcurl").value("687474703a2f2f7777772e7a696d757a752e74762f").build());
+                    }*/
+
+                for (int i = 0; i < cookies.size(); i++) {
+                    int count=-1;
+                    for (int j =0;j<sCookies.size();j++){
+                        if (cookies.get(i).name().equals(sCookies.get(j).name())){
+                            count=j;
+                        }
+                    }
+                    if (count==-1){
+                        sCookies.add(cookies.get(i));
+                    }else{
+                        sCookies.set(count,cookies.get(i));
+                    }
+                }
+                for (int i=sCookies.size()-1;i>=0;i--){
+                    if (sCookies.get(i).value().equals("deleted")){
+                        sCookies.remove(i);
                     }
                 }
             }
+
 
             @Override
             public List<Cookie> loadForRequest(HttpUrl url) {
@@ -71,6 +103,15 @@ public class OkHttpUtil {
         return response.isSuccessful();
     }
 
+    public static void getYunsuo() throws IOException{
+        Request request1 = new Request.Builder().url("http://www.zimuzu.tv/").build();
+        Response response1 = sOkHttpClient.newCall(request1).execute();
+        response1.body().close();
+        Request request2 = new Request.Builder().url("http://www.zimuzu.tv/?security_verify_data=313730362c393630").build();
+        Response response2 = sOkHttpClient.newCall(request2).execute();
+        response2.body().close();
+    }
+
     public static ArrayList<Cookie> getCookies() {
         return sCookies;
     }
@@ -81,6 +122,10 @@ public class OkHttpUtil {
 
     public static void setCookies(ArrayList<Cookie> cookies) {
         sCookies = cookies;
+    }
+
+    public static void addCookies(ArrayList<Cookie> cookies){
+        sCookies.addAll(cookies);
     }
 
 }

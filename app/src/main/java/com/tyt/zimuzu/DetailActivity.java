@@ -20,6 +20,7 @@ import android.view.View;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.tyt.data.data.Detail;
 import com.tyt.data.html.DetailParser;
+import com.tyt.data.html.DownloadParser;
 import com.tyt.data.http.OkHttpUtil;
 import com.tyt.zimuzu.RecyclerViewAdapter.DetailRecyclerAdapter;
 
@@ -65,10 +66,11 @@ public class DetailActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     try{
-                                        Request request = new Request.Builder().url(detail.getDownloadURL()).build();
+                                        /*Request request = new Request.Builder().url(detail.getDownloadURL()).build();
                                         Response response = OkHttpUtil.getOkHttpClient().newCall(request).execute();
                                         Document document = Jsoup.parse(response.body().string());
-                                        Elements elements = document.getAllElements();
+                                        Elements elements = document.getAllElements();*/
+                                        DownloadParser.parse(detail.getDownloadURL());
                                     }catch (Exception e){
                                         Log.w("download",e.toString());
                                     }
