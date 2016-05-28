@@ -23,16 +23,20 @@ import butterknife.ButterKnife;
 /**
  * Created by admin on 2016/5/10.
  */
-public class InfoRecyclerAdapter extends RecyclerView.Adapter<InfoRecyclerAdapter.MyHolder> {
+public class InfoRecyclerAdapter extends RecyclerView.Adapter<InfoRecyclerAdapter.InfoHolder> {
     private ArrayList<Info> dataList;
     private Intent mIntent;
     private Context mContext;
+    private boolean login=false;
 
     public InfoRecyclerAdapter(Context context){
         dataList= new ArrayList<Info>();
         mContext=context;
     }
 
+    public void setLogin(boolean login){
+        this.login=login;
+    }
     public void setDataList(ArrayList<Info> arrayList){
         if (arrayList!=null){
             this.notifyItemRangeRemoved(0,dataList.size());
@@ -48,7 +52,7 @@ public class InfoRecyclerAdapter extends RecyclerView.Adapter<InfoRecyclerAdapte
     }
 
     @Override
-    public void onBindViewHolder(MyHolder holder, final int position) {
+    public void onBindViewHolder(InfoHolder holder, final int position) {
         holder.mTextView.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
         holder.mTextView.getPaint().setAntiAlias(true);
         holder.mTextView.setText(dataList.get(position).getName());
@@ -56,7 +60,9 @@ public class InfoRecyclerAdapter extends RecyclerView.Adapter<InfoRecyclerAdapte
             @Override
             public void onClick(View v) {
                 mIntent = new Intent(mContext, DetailActivity.class);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mIntent.putExtra("URL",dataList.get(position).getInfoURL());
+                mIntent.putExtra("login",login);
                 mContext.startActivity(mIntent);
             }
         });
@@ -64,22 +70,22 @@ public class InfoRecyclerAdapter extends RecyclerView.Adapter<InfoRecyclerAdapte
     }
 
     @Override
-    public void onViewRecycled(MyHolder holder) {
+    public void onViewRecycled(InfoHolder holder) {
         Log.w("test","recycled"+holder.toString());
         super.onViewRecycled(holder);
     }
 
     @Override
-    public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public InfoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.info_item,parent,false);
-        MyHolder myHolder = new MyHolder(view);
-        return myHolder;
+        InfoHolder infoHolder = new InfoHolder(view);
+        return infoHolder;
     }
 
-    public class MyHolder extends RecyclerView.ViewHolder{
+    public class InfoHolder extends RecyclerView.ViewHolder{
         SimpleDraweeView mSimpleDraweeView;
         TextView mTextView;
-        MyHolder(View view){
+        InfoHolder(View view){
             super(view);
             mSimpleDraweeView = ButterKnife.findById(view,R.id.drawee);
             mTextView = ButterKnife.findById(view,R.id.text);

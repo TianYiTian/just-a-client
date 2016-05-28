@@ -14,4 +14,12 @@ public class SeasonDownload {
         this.name = name;
         this.downloads=downloads;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public LinkedList<Download> getDownloads() {
+        return downloads;
+    }
 }

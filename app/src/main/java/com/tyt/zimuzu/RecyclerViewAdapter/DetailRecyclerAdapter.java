@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 /**
  * Created by TYT on 2016/5/13.
  */
-public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAdapter.MyHolder> {
+public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAdapter.DetailHolder> {
     private Detail data=null;
     private Context mContext;
 
@@ -39,7 +39,7 @@ public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAd
     }
 
     @Override
-    public void onBindViewHolder(MyHolder holder, int position) {
+    public void onBindViewHolder(DetailHolder holder, int position) {
         if (data!=null) {
             switch (position) {
                 case 0:
@@ -199,6 +199,7 @@ public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAd
                             @Override
                             public void onClick(View widget) {
                                 Intent it = new Intent(Intent.ACTION_VIEW, Uri.parse(data.getImdb()));
+                                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 mContext.startActivity(it);
                             }
                         };
@@ -234,16 +235,16 @@ public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAd
     }
 
     @Override
-    public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DetailHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_item,parent,false);
-        MyHolder myHolder = new MyHolder(view);
-        return myHolder;
+        DetailHolder detailHolder = new DetailHolder(view);
+        return detailHolder;
     }
 
-    public class MyHolder extends RecyclerView.ViewHolder{
+    public class DetailHolder extends RecyclerView.ViewHolder{
         TextView info;
         TextView detail;
-        MyHolder(View view){
+        DetailHolder(View view){
             super(view);
             info = ButterKnife.findById(view,R.id.info);
             detail = ButterKnife.findById(view,R.id.detail);

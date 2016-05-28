@@ -1,32 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:title="作者">
-        <menu>
-            <item
-                android:title="唐御天"/>
-        </menu>
-    </item>
-    <item
-        android:title="github">
-        <menu>
-            <item
-                android:title="https://github.com/TianYiTian"/>
-        </menu>
-    </item>
-    <item
-        android:title="Info">
-        <menu>
-            <item
-                android:title="练手之作，欢迎随意批评"/>
-        </menu>
-    </item>
+        android:title="搜索"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_search"
+        android:id="@+id/search"/>
 
-    <item
-        android:title="Email">
-        <menu>
-            <item
-                android:title="Mordenkainen@foxmail.com"/>
-        </menu>
-    </item>
 </menu>

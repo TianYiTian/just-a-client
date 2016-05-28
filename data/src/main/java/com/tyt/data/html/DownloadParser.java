@@ -35,7 +35,7 @@ public class DownloadParser {
         ArrayList<Season> titles = new ArrayList<Season>(count);
         for (int i =0;i<count;i++){
             titles.add(new Season(Integer.parseInt(document.getElementsByClass("media-tab").get(0).children().get(i).attr("season")),document.getElementsByClass("media-tab").get(0).children().get(i).ownText()));
-        }//TODO titles.entrySet.iterator,根据键名存
+        }
         String name;
         ArrayList<SeasonDownload> seasons = new ArrayList<SeasonDownload>();
         for (int i =0;i<titles.size();i++){
@@ -46,6 +46,6 @@ public class DownloadParser {
             seasons.add(new SeasonDownload(titles.get(i).getName(),download));
         }
         Log.w("seasons",""+seasons.size());
-        return null;
+        return seasons;
     }
 }

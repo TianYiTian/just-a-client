@@ -1,5 +1,6 @@
 package com.tyt.zimuzu;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -46,6 +48,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private DetailParser mDetailParser;
     private DetailRecyclerAdapter mDetailRecyclerAdapter;
+    private boolean login=false;
 
 
 
@@ -59,25 +62,32 @@ public class DetailActivity extends AppCompatActivity {
                     mSimpleDraweeView.setImageURI(Uri.parse(((Detail)msg.obj).getImgURL()));
                     mCollapsingToolbarLayout.setTitle(detail.getName());
                     mDetailRecyclerAdapter.setData(detail);
-                    download.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ((MyApplication)getApplication()).getHandler().post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try{
-                                        /*Request request = new Request.Builder().url(detail.getDownloadURL()).build();
+                    if (!login){
+                        download.setVisibility(View.GONE);
+                    }else {
+                        download.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getApplicationContext(),DownLoadActivity.class);
+                                intent.putExtra("url",detail.getDownloadURL());
+                                startActivity(intent);
+                                /*((MyApplication) getApplication()).getHandler().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                        *//*Request request = new Request.Builder().url(detail.getDownloadURL()).build();
                                         Response response = OkHttpUtil.getOkHttpClient().newCall(request).execute();
                                         Document document = Jsoup.parse(response.body().string());
-                                        Elements elements = document.getAllElements();*/
-                                        DownloadParser.parse(detail.getDownloadURL());
-                                    }catch (Exception e){
-                                        Log.w("download",e.toString());
+                                        Elements elements = document.getAllElements();*//*
+                                            DownloadParser.parse(detail.getDownloadURL());
+                                        } catch (Exception e) {
+                                            Log.w("download", e.toString());
+                                        }
                                     }
-                                }
-                            });
-                        }
-                    });
+                                });*/
+                            }
+                        });
+                    }
                     break;
             }
         }
@@ -91,8 +101,12 @@ public class DetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeActionContentDescription("login");
         mCollapsingToolbarLayout.setTitle("读取中");
-        mDetailRecyclerAdapter=new DetailRecyclerAdapter(this);
+        mDetailRecyclerAdapter=new DetailRecyclerAdapter(getApplicationContext());
         mRecyclerView.setAdapter(mDetailRecyclerAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -101,6 +115,17 @@ public class DetailActivity extends AppCompatActivity {
         String URL = getIntent().getStringExtra("URL");
         mDetailParser = new DetailParser(mHandler);
         mDetailParser.parse(URL);
+        login = getIntent().getBooleanExtra("login",false);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

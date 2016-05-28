@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
         head = ButterKnife.findById(navigation.getHeaderView(0), R.id.head);
         name = ButterKnife.findById(navigation.getHeaderView(0), R.id.name);
-        mInfoRecyclerAdapter = new InfoRecyclerAdapter(this);
+        mInfoRecyclerAdapter = new InfoRecyclerAdapter(getApplicationContext());
         mRecyclerView.setAdapter(mInfoRecyclerAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -207,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setLoginAction(boolean login) {
+        mInfoRecyclerAdapter.setLogin(login);
         if (login) {
             head.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -374,6 +375,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                     } else {
+                        setLoginAction(login=false);
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -392,11 +394,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main,menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.search:
+                //TODO
+                Log.w("search","test");
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
