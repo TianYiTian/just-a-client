@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.tyt.data.data.Detail;
 import com.tyt.zimuzu.R;
+import com.tyt.zimuzu.SearchActivity;
 
 import butterknife.ButterKnife;
 
@@ -88,7 +89,6 @@ public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAd
                         for (int i =0;i<size;i++){
                             length[i] = data.getScreenwriter().get(i).getName().length();
                         }
-                        Intent intent;
                         ClickableSpan clickableSpan;
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i=0;i<size;i++){
@@ -104,10 +104,14 @@ public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAd
                                 count+=length[j];
                                 count+=1;
                             }
+                            final int where=i;
                             clickableSpan = new ClickableSpan() {
                                 @Override
                                 public void onClick(View widget) {
-                                    //TODO 搜索页
+                                    Intent intent = new Intent(mContext,SearchActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("url",data.getScreenwriter().get(where).getURL());
+                                    mContext.startActivity(intent);
                                 }
                             };
                             spannableString.setSpan(clickableSpan,count,count+length[i],Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -125,7 +129,6 @@ public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAd
                         for (int i =0;i<size;i++){
                             length[i] = data.getDirector().get(i).getName().length();
                         }
-                        Intent intent;
                         ClickableSpan clickableSpan;
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i=0;i<size;i++){
@@ -141,10 +144,14 @@ public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAd
                                 count+=length[j];
                                 count+=1;
                             }
+                            final int where=i;
                             clickableSpan = new ClickableSpan() {
                                 @Override
                                 public void onClick(View widget) {
-                                    //TODO 搜索页
+                                    Intent intent = new Intent(mContext,SearchActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("url",data.getDirector().get(where).getURL());
+                                    mContext.startActivity(intent);
                                 }
                             };
                             spannableString.setSpan(clickableSpan,count,count+length[i],Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -162,7 +169,6 @@ public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAd
                         for (int i =0;i<size;i++){
                             length[i] = data.getActor().get(i).getName().length();
                         }
-                        Intent intent;
                         ClickableSpan clickableSpan;
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i=0;i<size;i++){
@@ -178,10 +184,14 @@ public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAd
                                 count+=length[j];
                                 count+=1;
                             }
+                            final int where=i;
                             clickableSpan = new ClickableSpan() {
                                 @Override
                                 public void onClick(View widget) {
-                                    //TODO 搜索页
+                                    Intent intent = new Intent(mContext,SearchActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("url",data.getActor().get(where).getURL());
+                                    mContext.startActivity(intent);
                                 }
                             };
                             spannableString.setSpan(clickableSpan,count,count+length[i],Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

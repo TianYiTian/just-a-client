@@ -402,8 +402,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.search:
-                //TODO
-                Log.w("search","test");
+                Intent intent = new Intent(getApplicationContext(),SearchActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+//                Log.w("search","test");
                 break;
         }
         return super.onOptionsItemSelected(item);

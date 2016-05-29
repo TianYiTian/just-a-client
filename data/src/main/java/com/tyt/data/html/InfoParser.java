@@ -37,8 +37,8 @@ public class InfoParser {
 
     public InfoParser(Handler handler) {
         mainHandler=handler;
-        HandlerThread handlerThread = new HandlerThread("info");
-        handlerThread.start();
+        /*HandlerThread handlerThread = new HandlerThread("info");
+        handlerThread.start();*/
         mOkHttpClient= OkHttpUtil.getOkHttpClient();
     }
 
