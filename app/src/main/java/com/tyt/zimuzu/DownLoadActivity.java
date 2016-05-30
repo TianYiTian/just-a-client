@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -37,7 +38,7 @@ import okhttp3.Response;
 public class DownLoadActivity extends AppCompatActivity{
     @Bind(R.id.download_recycler)RecyclerView list;
     @Bind(R.id.toolbar)Toolbar mToolbar;
-    @Bind(R.id.season)LinearLayout seasons;
+    @Bind(R.id.season)LinearLayoutCompat seasons;
     private String url=null;
     private DownloadRecyclerAdapter mDownloadRecyclerAdapter;
     private Handler mHandler;

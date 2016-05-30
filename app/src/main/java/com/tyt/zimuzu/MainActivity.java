@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mToolbar.setTitle("嘿嘿嘿");
+        mToolbar.setTitle("字幕组");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

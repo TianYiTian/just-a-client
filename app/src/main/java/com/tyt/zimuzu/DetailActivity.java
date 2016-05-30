@@ -65,6 +65,7 @@ public class DetailActivity extends AppCompatActivity {
                     if (!login){
                         download.setVisibility(View.GONE);
                     }else {
+                        download.setVisibility(View.VISIBLE);
                         download.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -116,6 +117,11 @@ public class DetailActivity extends AppCompatActivity {
         mDetailParser = new DetailParser(mHandler);
         mDetailParser.parse(URL);
         login = getIntent().getBooleanExtra("login",false);
+        if (login){
+            download.setVisibility(View.VISIBLE);
+        }else {
+            download.setVisibility(View.GONE);
+        }
 
     }
 
