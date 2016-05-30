@@ -78,6 +78,7 @@ public class DetailParser {
                     Request request = new Request.Builder().url(URL).build();
                     Response response = mOkHttpClient.newCall(request).execute();
                     Document document = Jsoup.parse(response.body().string());
+                    response.body().close();
                     Element info = document.getElementsByClass("fl-info").first();
                     Element download = document.getElementsByClass("download-tab").first();
                     Element resource = document.getElementsByClass("resource-con").first();

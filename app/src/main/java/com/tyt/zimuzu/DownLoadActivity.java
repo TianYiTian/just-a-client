@@ -73,6 +73,7 @@ public class DownLoadActivity extends AppCompatActivity{
                         @Override
                         public void run() {
                             mDownloadRecyclerAdapter.setData(downloads);
+                            seasons.removeAllViews();
                             for (int i =0;i<downloads.size();i++){
                                 AppCompatButton appCompatButton = new AppCompatButton(DownLoadActivity.this);
                                 appCompatButton.setText(downloads.get(i).getName());

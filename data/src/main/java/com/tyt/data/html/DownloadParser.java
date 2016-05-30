@@ -31,6 +31,7 @@ public class DownloadParser {
         Request request = new Request.Builder().url(s).build();
         Response response = OkHttpUtil.getOkHttpClient().newCall(request).execute();
         Document document = Jsoup.parse(response.body().string());
+        response.body().close();
         int count = document.getElementsByClass("media-tab").get(0).childNodeSize();
         ArrayList<Season> titles = new ArrayList<Season>(count);
         for (int i =0;i<count;i++){

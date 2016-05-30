@@ -89,7 +89,6 @@ public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAd
                         for (int i =0;i<size;i++){
                             length[i] = data.getScreenwriter().get(i).getName().length();
                         }
-                        ClickableSpan clickableSpan;
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i=0;i<size;i++){
                             stringBuilder.append(data.getScreenwriter().get(i).getName());
@@ -102,21 +101,23 @@ public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAd
                             int count=0;
                             for (int j=0;j<i;j++){
                                 count+=length[j];
-                                count+=1;
+                                if (j!=size-1) {
+                                    count += 1;
+                                }
                             }
                             final int where=i;
-                            clickableSpan = new ClickableSpan() {
+                            spannableString.setSpan(new ClickableSpan() {
                                 @Override
                                 public void onClick(View widget) {
                                     Intent intent = new Intent(mContext,SearchActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra("url",data.getScreenwriter().get(where).getURL());
+                                    intent.putExtra("URL",data.getScreenwriter().get(where).getURL());
                                     mContext.startActivity(intent);
                                 }
-                            };
-                            spannableString.setSpan(clickableSpan,count,count+length[i],Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            },count,count+length[i],Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         }
                         holder.detail.setText(spannableString);
+                        holder.detail.setMovementMethod(LinkMovementMethod.getInstance());
                     }
                     break;
                 case 10:
@@ -129,7 +130,6 @@ public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAd
                         for (int i =0;i<size;i++){
                             length[i] = data.getDirector().get(i).getName().length();
                         }
-                        ClickableSpan clickableSpan;
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i=0;i<size;i++){
                             stringBuilder.append(data.getDirector().get(i).getName());
@@ -142,21 +142,23 @@ public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAd
                             int count=0;
                             for (int j=0;j<i;j++){
                                 count+=length[j];
-                                count+=1;
+                                if (j!=size-1) {
+                                    count += 1;
+                                }
                             }
                             final int where=i;
-                            clickableSpan = new ClickableSpan() {
+                            spannableString.setSpan(new ClickableSpan() {
                                 @Override
                                 public void onClick(View widget) {
                                     Intent intent = new Intent(mContext,SearchActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra("url",data.getDirector().get(where).getURL());
+                                    intent.putExtra("URL",data.getDirector().get(where).getURL());
                                     mContext.startActivity(intent);
                                 }
-                            };
-                            spannableString.setSpan(clickableSpan,count,count+length[i],Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            },count,count+length[i],Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         }
                         holder.detail.setText(spannableString);
+                        holder.detail.setMovementMethod(LinkMovementMethod.getInstance());
                     }
                     break;
                 case 11:
@@ -169,7 +171,6 @@ public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAd
                         for (int i =0;i<size;i++){
                             length[i] = data.getActor().get(i).getName().length();
                         }
-                        ClickableSpan clickableSpan;
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i=0;i<size;i++){
                             stringBuilder.append(data.getActor().get(i).getName());
@@ -182,21 +183,32 @@ public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAd
                             int count=0;
                             for (int j=0;j<i;j++){
                                 count+=length[j];
-                                count+=1;
+                                if (j!=size-1) {
+                                    count += 1;
+                                }
                             }
                             final int where=i;
-                            clickableSpan = new ClickableSpan() {
+                            /*ClickableSpan clickableSpan = new ClickableSpan() {
                                 @Override
                                 public void onClick(View widget) {
                                     Intent intent = new Intent(mContext,SearchActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra("url",data.getActor().get(where).getURL());
+                                    intent.putExtra("URL",data.getActor().get(where).getURL());
                                     mContext.startActivity(intent);
                                 }
-                            };
-                            spannableString.setSpan(clickableSpan,count,count+length[i],Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            };*/
+                            spannableString.setSpan(new ClickableSpan() {
+                                @Override
+                                public void onClick(View widget) {
+                                    Intent intent = new Intent(mContext,SearchActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("URL",data.getActor().get(where).getURL());
+                                    mContext.startActivity(intent);
+                                }
+                            },count,count+length[i],Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         }
                         holder.detail.setText(spannableString);
+                        holder.detail.setMovementMethod(LinkMovementMethod.getInstance());
                     }
                     break;
                 case 12:
@@ -228,6 +240,7 @@ public class DetailRecyclerAdapter extends RecyclerView.Adapter<DetailRecyclerAd
                             @Override
                             public void onClick(View widget) {
                                 Intent it = new Intent(Intent.ACTION_VIEW, Uri.parse(data.getWebsite()));
+                                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 mContext.startActivity(it);
                             }
                         };
